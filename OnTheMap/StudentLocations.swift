@@ -24,7 +24,7 @@ struct StudentInformation {
     
     //MARK: Initializer
     
-    /* Construct a StudentInformation object from a dictionary */
+    // Construct a StudentInformation object from a dictionary
     init(dictionary: [String: AnyObject]) {
         
         objectid = dictionary[ParseConstants.JSONResponseKeys.objectID] as? String!

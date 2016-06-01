@@ -12,17 +12,20 @@ class UdacityConstants : AnyObject{
     
     struct Constants {
         //Udacity URL
-        static let UdacityBaseURLSecure: String = "https://www.udacity.com/api/"
+        static let UdacityBaseURLSecure: String = "https://www.udacity.com/"
         
 
     }
     
       struct Methods {
-    // MARK: Udacity Authentication
-    static let Session = "session"
+    //Udacity Authentication
+    static let Session = "api/session"
     
-    // MARK: Public User Data
+    //Public User Data
     static let AuthenticationTokenNew = "authentication/token/new"
+    static let UserData = "api/users/"
+    static let SignIn = "account/auth#!/signin"
+
     
     }
     
@@ -39,20 +42,42 @@ class UdacityConstants : AnyObject{
     
     struct JSONResponseKeys {
         
-        // MARK: General
+        // General
         static let StatusMessage = "status_message"
         static let StatusCode = "status_code"
         
-        // MARK: Udacity Authorization
+        // Udacity Authorization
         static let RequestToken = "request_token"
         static let Session = "session"
         static let sessionID = "id"
         static let account = "account"
         static let key = "key"
         
-        // MARK: Udacity Account
+        // Udacity Account
         static let UserID = "id"
     }
+
+    struct User {
+        //ADDED this for geocoding call from add entry view controller
+        static var email : String?
+        static var password : String?
+        static var uniqueKey : String?
+        
+        static var lastName : String?
+        static var firstName : String?
+        
+        static var mediaURL : String?
+        static var mapString : String?
+        static var latitude : Double?
+        static var longitude : Double?
+        static var updatedAt : String?
+        static var objectId : String?
+        static var createdAt : String?
+    }
+    struct ParameterKeys {
+        static let uniqueKey = "uniqueKey"
+    }
+
 
 
 }

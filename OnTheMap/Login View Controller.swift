@@ -15,12 +15,10 @@ class LoginViewController: UIViewController, UITextFieldDelegate, UITableViewDel
     var session: NSURLSession!
     var appDelegate: AppDelegate!
     
-    
     @IBOutlet weak var emailTextField: UITextField!
-    
     @IBOutlet weak var passwordTextField: UITextField!
-    
     @IBOutlet weak var loginButton: UIButton!
+    @IBOutlet weak var spinner: UIActivityIndicatorView!
     
     override func viewDidLoad(){
         super.viewDidLoad()
@@ -28,50 +26,77 @@ class LoginViewController: UIViewController, UITextFieldDelegate, UITableViewDel
         //get shared URL session
         session = NSURLSession.sharedSession()
         appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
+        emailTextField.delegate = self
+        passwordTextField.delegate = self
+        spinner.hidesWhenStopped = true
         
     }
     
     func ViewWillAppear(animated: Bool) {
         super.viewWillAppear(true)
-        
+        spinner.hidden = true
         
     }
     
     
     @IBAction func loginButton(sender: AnyObject) {
         
-        UdacityClient.sharedInstance().postSession(emailTextField.text!, password: passwordTextField.text!) { (sessionID, error) in
-            
-            if let sessionID = sessionID {
-                print("Successful login for Session \(sessionID)")
-                UdacityClient.sharedInstance().sessionID = sessionID
-                self.completeLogin()
-                
-              
-            } else {
-                let alert = UIAlertController(title: "Error", message: "Invalid login or password", preferredStyle: UIAlertControllerStyle.Alert)
-                alert.addAction(UIAlertAction(title: "Dismiss", style: UIAlertActionStyle.Default, handler: nil))
-                self.presentViewController(alert, animated: true, completion: nil)
-                
-            }
-            
-            if let error = error {
-                
-                print("Login failure. error: \(error)")
-                
-            } else {
-                print("Login failure. No error returned")
-            }
-            
+        if ((emailTextField.text!.isEmpty) || (passwordTextField.text!.isEmpty)) {
+            showAlert("Empty Email or Password")
+        } else {
+            let email = emailTextField.text!
+            let password = passwordTextField.text!
+            spinner.hidden = false
+            spinner.startAnimating()
+            UdacityClient.sharedInstance().loginWithUdacity(email, password: password, completionHandler: closureForLoginDidSucceed)
+        }
+    }
+    func closureForLoginDidSucceed(success: Bool, message: String, error: NSError?) -> Void {
+        if success {
+            completeLogin(message)
+        } else {
+            showAlert(message)
+        }
     }
     
-    }
-    
-    func completeLogin(){
+    func completeLogin(message: String) {
+        //Log in
         dispatch_async(dispatch_get_main_queue(), {
-            let tabBarController = self.storyboard!.instantiateViewControllerWithIdentifier("TabBarController")
-            self.presentViewController(tabBarController, animated: true, completion: nil)
+        let controller = self.storyboard!.instantiateViewControllerWithIdentifier("TabBarController")
+        self.spinner.stopAnimating()
+        self.presentViewController(controller, animated: true, completion: nil)
+        print(message)
         })
     }
+    
+    func showAlert(error: String) {
+        //show an alert
+        dispatch_async(dispatch_get_main_queue(), {
+            self.spinner.stopAnimating()
+            let alert = UIAlertController(title: "", message: error, preferredStyle: UIAlertControllerStyle.Alert)
+            alert.addAction(UIAlertAction(title: "Dismiss", style: UIAlertActionStyle.Default, handler: nil))
+            self.presentViewController(alert, animated: true, completion: nil)
+        })
+    }
+    
+    func textFieldShouldReturn(textField: UITextField) -> Bool {
+        dismissAnyVisibleKeyboards()
+        loginButton(UIButton)
+        return true
+    }
+    
+    override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
+        emailTextField.resignFirstResponder()
+        passwordTextField.resignFirstResponder()
+    }
+    
+    func dismissAnyVisibleKeyboards() {
+        if emailTextField.isFirstResponder() || passwordTextField.isFirstResponder() {
+            view.endEditing(true)
+        }
+    }
 }
+    
+    
+
 

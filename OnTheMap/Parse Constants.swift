@@ -12,13 +12,13 @@ import Foundation
 class ParseConstants : AnyObject{
     
     struct Constants {
-    // MARK: Parse API Key
+    //  Parse API Key
     static let ParseApiKey : String = "QuWThTdiRmTux3YaDseUSEpUKo7aBYM737yKd4gY"
     
-    // MARK: Parse Application ID
+    // Parse Application ID
     static let ParseApplicationID : String = "QrX47CA9cyuGewLdsL7o5Eb8iug6Em8ye0dnAbIr"
     
-    //Parse URL
+    // Parse URL
     static let ParseBaseURLSecure :  String = "https://api.parse.com/1/classes/"
     
          }
@@ -35,6 +35,8 @@ static let Longitude = "longitude"
 static let CreatedAt = "createdAt"
 static let UpdatedAt = "updatedAt"
 static let ACL = "ACL"
+static let firstName = "firstName"
+    
 }
 
 
@@ -50,7 +52,7 @@ struct ParameterKeys {
 
   struct JSONResponseKeys {
 
-// MARK: Parse Student Locations
+// Parse Student Locations
 static let LocationResults = "results"
 static let CreatedAt = "createdAt"
 static let FirstName = "firstName"
@@ -67,7 +69,7 @@ static let updatedAt = "updatedAt"
 }
     
     struct Methods {
-    // MARK: General
+    // General
     static let StatusMessage = "status_message"
     static let StatusCode = "status_code"
     static let Location = "StudentLocation"     //Used for Getting or Posting a location

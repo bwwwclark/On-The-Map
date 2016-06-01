@@ -14,9 +14,7 @@ class StudentInformationClient: NSObject {
     class func sharedInstance() -> StudentInformationClient {
         struct Singleton {
             static var sharedInstance = StudentInformationClient()
-            
         }
         return Singleton.sharedInstance
     }
-    
 }
