@@ -80,7 +80,7 @@ class ParseClient: AnyObject {
         //Specify parameters
         
         
-        let parameters = [ParseConstants.ParameterKeys.limit: Limit]
+        let parameters = [ParseConstants.ParameterKeys.limit: Limit, ParseConstants.ParameterKeys.order: "-updatedAt"]
         
         let method : String = ParseConstants.Methods.Location
         
@@ -223,8 +223,14 @@ class ParseClient: AnyObject {
     }
     
     func postStudentLocation(mapString: String, mediaURL: String, completionHandler: (success: Bool) -> Void) {
-        let request = NSMutableURLRequest(URL: NSURL(string: "\(ParseConstants.Constants.ParseBaseURLSecure)")!)
-        request.HTTPMethod = "POST"
+
+        
+        let method : String = ParseConstants.Methods.Location
+        // Build the URL and configure the request
+        let urlString = ParseConstants.Constants.ParseBaseURLSecure + method
+        let url = NSURL(string: urlString)!
+        let request = NSMutableURLRequest(URL: url)
+              request.HTTPMethod = "POST"
         request.addValue(ParseConstants.Constants.ParseApplicationID, forHTTPHeaderField: "X-Parse-Application-Id")
         request.addValue(ParseConstants.Constants.ParseApiKey, forHTTPHeaderField: "X-Parse-REST-API-Key")
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")

@@ -64,6 +64,7 @@ class MapViewController: UIViewController, MKMapViewDelegate{
         ParseClient.sharedInstance().getStudentLocations("100", completionHandler: { error in
             if let error = error {
                 print("Error retrieving annotations from Parse: \(error)")
+                self.showAlert("Data failed to load")
             } else if !StudentInformationClient.sharedInstance().studentInformationArray.isEmpty {
                 
                 var annotations = [MKPointAnnotation]()

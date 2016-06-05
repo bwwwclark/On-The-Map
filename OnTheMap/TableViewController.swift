@@ -19,7 +19,6 @@ class TableViewController: UIViewController, UITableViewDelegate, UITableViewDat
     
     var session: NSURLSession!
     var appDelegate: AppDelegate!
-    var information: [StudentInformation] = [StudentInformation]()
     
     override func viewDidLoad(){
         super.viewDidLoad()
@@ -74,15 +73,27 @@ class TableViewController: UIViewController, UITableViewDelegate, UITableViewDat
         ParseClient.sharedInstance().getStudentLocations("100", completionHandler: { error in
             if let error = error {
                 print("Error retrieving annotations from Parse: \(error)")
+                self.showAlert("Data failed to load")
             } else if !StudentInformationClient.sharedInstance().studentInformationArray.isEmpty {
                 dispatch_async(dispatch_get_main_queue(), { () -> Void in
                     self.otmTableView.reloadData()
                 })
             } else {
                 print("Error- no student information downloaded")
+                self.showAlert("Data failed to load")
             }
         })
     }
+    
+    func showAlert(error: String) {
+        //Show an alert
+        dispatch_async(dispatch_get_main_queue(), {
+            let alert = UIAlertController(title: "", message: error, preferredStyle: UIAlertControllerStyle.Alert)
+            alert.addAction(UIAlertAction(title: "Dismiss", style: UIAlertActionStyle.Default, handler: nil))
+            self.presentViewController(alert, animated: true, completion: nil)
+        })
+    }
+
     
     @IBAction func logout(sender: AnyObject) {
             //Log out
